@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+	<!-- 
+		使用注解:
+			注解方式可以简化Spring的Ioc容器的配置：
+			使用注解的步骤：
+				1：先引入context名称空间；
+				2：开启注解扫描,指定扫描哪一个包下面的类；
+				3：使用注解，通过注解的方式，把对象加入IoC容器中；
+				         还有一种简写方式，直接写@Component 和 @Resource，
+　　　　　　　　　　　　     @Component加入IoC容器的UserDao对象的引用名称，默认和类名一样，且第一个字母小写。
+　　　　　　　　　　　　     @Resource去容器中找UserDao类型的变量，找到后赋值
+				4：由于dao层，service层，action层都是用@ Component注解容易造成混乱，不能区分是那一层的注解；
+　　　　　　　　　		dao层（持久层）：@Component==》@Repository
+　　　　　　　　　		service层（业务逻辑层）：@Component==》@Service
+　　　　　　　　 		action层（控制层）：@Component==》@Controller
+	 -->
+	
+	<!-- 开启注解扫描 -->
+	<context:component-scan base-package="com.bie.lesson04"></context:component-scan>
+	
+	
+	
+</beans>
+
