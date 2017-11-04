@@ -9,6 +9,11 @@ public class User {
 
 	private int id;
 	private String name;
+
+	public User() {
+		super();
+		System.out.println("user对象的创建！！");
+	}
 	public int getId() {
 		return id;
 	}
@@ -20,6 +25,10 @@ public class User {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + "]";
 	}
 	
 }
