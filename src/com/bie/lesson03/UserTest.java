@@ -40,4 +40,14 @@ public class UserTest {
 		
 		userAction.execute();
 	}
+	
+	@Test
+	public void test04(){
+		//第一步，ioc容器的创建
+		ApplicationContext ac = new ClassPathXmlApplicationContext("com/bie/lesson03/bean.xml");
+		//第二步，获取容器中的对象
+		UserAction userAction = (UserAction) ac.getBean("userAction");
+		
+		userAction.execute();
+	}
 }

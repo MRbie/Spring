@@ -59,7 +59,7 @@
 		如下所示：
 　　　　　  	缺点:相当于局部变量，service和dao只能使用一次,不方便维护.　
 	 -->
-	 <bean id="userAction" class="com.bie.lesson03.UserAction"> 
+	 <!-- <bean id="userAction" class="com.bie.lesson03.UserAction"> 
 	 	<property name="userService">
 	 		<bean id="userService" class="com.bie.lesson03.UserService">
 	 			<property name="userDao">
@@ -67,7 +67,20 @@
 	 			</property>
 	 		</bean>
 	 	</property>
-	 </bean>
+	 </bean> -->
 	 
+	 <!-- 
+	 	p命名空间，如下所示：
+　　　	注意:
+			给对象属性注入值也可以通过p名称空间给对象的属性注入值，
+			但是Spring的版本必须是3.0版本以上才可以使用
+　　　　　 必须在applicationContext.xml中引入这句话:
+			xmlns:p="http://www.springframework.org/schema/p"
+	  -->
+	  <!-- 使用p名称空间给对象的属性注入值 -->
+	  <bean id="userDao" class="com.bie.lesson03.UserDao"></bean> 	
+	  <bean id="userService" p:userDao-ref="userDao" class="com.bie.lesson03.UserService"></bean>	 
+	  <bean id="userAction" p:userService-ref="userService" class="com.bie.lesson03.UserAction"></bean>	 
+		 
 </beans>
 
