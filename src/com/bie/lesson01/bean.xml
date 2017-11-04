@@ -11,12 +11,19 @@
      
      <!-- IoC容器的配置，要创建的所有的对象都配置在这里 -->
      <!-- 默认是单例模式 -->
-     <bean id="user" class="com.bie.lesson01.User" scope="singleton"></bean>
+     <!-- <bean id="user" class="com.bie.lesson01.User" scope="singleton"></bean> -->
      
      <!-- 多例模式 -->
      <!-- <bean id="user" class="com.bie.lesson01.User" scope="prototype"></bean> -->
      
-     
+     <!-- 
+     	懒加载的学习
+     		只对单例singleton有效，对多例无效
+     		 lazy-init="default" 默认是false,不延迟创建，即在启动的时候就创建对象
+       		 lazy-init="true" 延迟初始化，在用到对象的时候才创建
+      -->
+     <!-- <bean id="user" class="com.bie.lesson01.User" lazy-init="default"></bean> -->
+     <bean id="user" class="com.bie.lesson01.User" lazy-init="default"></bean>
      
      
 </beans>
