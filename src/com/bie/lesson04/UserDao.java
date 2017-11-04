@@ -10,7 +10,9 @@ import org.springframework.stereotype.Repository;
 *
 */
 //@Component("userDao") //userDao加入Ioc容器中
-@Repository("userDao")
+//@Component
+//@Repository("userDao")
+@Repository  //在持久层可以使用这个注解
 public class UserDao {
 
 	public void save(){
