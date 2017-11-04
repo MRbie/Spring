@@ -31,4 +31,12 @@ public class User {
 		return "User [id=" + id + ", name=" + name + "]";
 	}
 	
+	public void init_user(){
+		System.out.println("user对象创建以后，初始化");
+	}
+	
+	public void destory_user(){
+		System.out.println("Ioc容器销毁以后，user对象回收");
+	}
 }
+
