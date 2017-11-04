@@ -78,9 +78,30 @@
 			xmlns:p="http://www.springframework.org/schema/p"
 	  -->
 	  <!-- 使用p名称空间给对象的属性注入值 -->
-	  <bean id="userDao" class="com.bie.lesson03.UserDao"></bean> 	
+	  <!-- <bean id="userDao" class="com.bie.lesson03.UserDao"></bean> 	
 	  <bean id="userService" p:userDao-ref="userDao" class="com.bie.lesson03.UserService"></bean>	 
-	  <bean id="userAction" p:userService-ref="userService" class="com.bie.lesson03.UserAction"></bean>	 
+	  <bean id="userAction" p:userService-ref="userService" class="com.bie.lesson03.UserAction"></bean>	  -->
 		 
+	  	   
+	  <!-- 
+	  	    自动装配，了解即可
+	  	 	1:按照类型自动装配
+	  	 	2:按照名称自动装配
+	   --> 
+	  <!-- 自动装配
+        	1:根据"名称"自动装配，userService注入的属性，
+        		会去IoC容器中自动查询和属性名称同名的对象
+            	即在service层的方法中实现UserDao的定义的名称去
+            	和IoC容器(applicationContext.xml)中名称相同的。
+		--> 	
+	  <!-- 根据名称自动装配 -->	
+	  <!-- <bean id="userDao" class="com.bie.lesson03.UserDao"></bean> 	
+	  <bean id="userService" autowire="byName" class="com.bie.lesson03.UserService"></bean>	 
+	  <bean id="userAction"  autowire="byName" class="com.bie.lesson03.UserAction"></bean> -->	
+		 
+	  <!-- 根据类型自动装配 --> 
+	  <bean id="userDao" class="com.bie.lesson03.UserDao"></bean> 	
+	  <bean id="userService" autowire="byType" class="com.bie.lesson03.UserService"></bean>	 
+	  <bean id="userAction"  autowire="byType" class="com.bie.lesson03.UserAction"></bean>		 
 </beans>
 
