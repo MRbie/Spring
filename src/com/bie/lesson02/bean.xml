@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+
+	<!-- 
+      	Ioc容器创建对象的方法
+      		1：调用无参的构造器
+      		2：调用有参的构造器
+      		3：工厂创建对象。
+      			工厂类，静态方法创建对象。
+      			工厂类，非静态方法创建对象。
+      -->
+    <!-- 默认无参的构造器 -->
+	<!-- <bean id="user" class="com.bie.lesson02.User"></bean> -->
+
+	<!-- 
+		带参的构造器
+			基本数据类型，直接写，如int
+			引用数据类型，写全名。
+	 -->
+	<!-- <bean id="user" class="com.bie.lesson02.User">
+		<constructor-arg value="100" index="0" type="int"></constructor-arg>
+		<constructor-arg value="Jack" index="1" type="java.lang.String"></constructor-arg>
+	</bean> -->
+	
+	
+	<!-- 定义一个字符串，值是'张三';String str=new String("张三"); -->
+	<!-- <bean id="str" class="java.lang.String">
+		<constructor-arg value="Jack"></constructor-arg>
+	</bean>
+	
+	<bean id="user" class="com.bie.lesson02.User">
+		<constructor-arg value="100" index="0" type="int"></constructor-arg>
+		<constructor-arg ref="str" index="1" type="java.lang.String"></constructor-arg>
+	</bean> -->
+	
+	
+	<!-- 3：工厂类创建对象
+        	 工厂类，实例方法，必须先创建工厂
+         	再创建user对象，用factory的实例方法    
+	-->
+	<!-- 先创建工厂 -->
+	<!-- <bean id="factory" class="com.bie.lesson02.FactoryUser"></bean>
+	再创建user对象，用factory工厂的实例方法
+	<bean id="user" factory-bean="factory" factory-method="getInstance"></bean> -->
+	
+	
+	<!--
+         4:工厂类，静态方法，静态方法不需要实例化对象，
+            class指定的就是工厂类型
+            factory-method一定是工厂里面的静态方法    
+	-->
+	<bean id="user" class="com.bie.lesson02.FactoryUser" factory-method="getStaticInstance"></bean>
+	
+</beans>
+
