@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 	
+	<!-- 
+		Aop，  aspect object programming  面向切面编程,即面向重复的代码编程。
+		功能: 让关注点代码与业务代码分离！
+		关注点,
+			重复代码就叫做关注点;
+		切面(切面类),
+	 		关注点形成的类,就叫切面(类)！
+	 		面向切面编程,就是指 对很多功能都有的重复的代码抽取,再在运行的时候网业务方法上动态植入“切面类代码”。
+		切入点(切入点表达式),
+			执行目标对象方法,动态植入切面代码。
+			可以通过切入点表达式，指定拦截哪些类的哪些方法； 给指定的类在运行的时候植入切面类代码。
+	 -->
+	<!-- 
+		注解方法实现Aop:
+			1:先引入aop相关jar文件    	（aspectj  aop优秀组件）					
+				spring-aop-3.2.5.RELEASE.jar   【spring3.2源码】
+				aopalliance.jar				  【spring2.5源码/lib/aopalliance】
+				aspectjweaver.jar			  【spring2.5源码/lib/aspectj】或【aspectj-1.8.2\lib】
+				aspectjrt.jar				  【spring2.5源码/lib/aspectj】或【aspectj-1.8.2\lib】
+			注意： 用到spring2.5版本的jar文件，如果用jdk1.7可能会有问题。
+				需要升级aspectj组件，即使用aspectj-1.8.2版本中提供jar文件提供。
+			2: bean.xml中引入aop名称空间
+			3:开启aop注解
+			4:使用注解
+				@Aspect				指定一个类为切面类		
+				@Pointcut("execution(* com.bie.lesson08.*.*(..))")  
+					指定切入点表达式
+				
+				@Before("pointCut_()")			前置通知: 目标方法之前执行
+				@After("pointCut_()")			后置通知：目标方法之后执行（始终执行）
+				@AfterReturning("pointCut_()")	返回后通知： 执行方法结束前执行(异常不执行)
+				@AfterThrowing("pointCut_()")	异常通知:  出现异常时候执行
+				@Around("pointCut_()")			环绕通知： 环绕目标方法执行
+	 -->
+	
+	
+	<!-- 开启注解扫描 -->
+	<context:component-scan base-package="com.bie.lesson08"></context:component-scan>
+	
+	<!-- 开启Aop注解方式代理 -->
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	
+	
+</beans>
+
