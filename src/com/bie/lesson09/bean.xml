@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 	
+	<!-- 
+		Aop，  aspect object programming  面向切面编程,即面向重复的代码编程。
+		功能: 让关注点代码与业务代码分离！
+		关注点,
+			重复代码就叫做关注点;
+		切面(切面类),
+	 		关注点形成的类,就叫切面(类)！
+	 		面向切面编程,就是指 对很多功能都有的重复的代码抽取,再在运行的时候网业务方法上动态植入“切面类代码”。
+		切入点(切入点表达式),
+			执行目标对象方法,动态植入切面代码。
+			可以通过切入点表达式，指定拦截哪些类的哪些方法； 给指定的类在运行的时候植入切面类代码。
+	 -->
+	<!-- 
+		Xml实现aop编程：
+			1) 引入jar文件  【aop 相关jar， 4个】
+			2) 引入aop名称空间
+			3) aop 配置:
+				配置切面类 （重复执行代码形成的类）
+				aop配置:
+					拦截哪些方法 ,拦截到方法后应用通知代码
+	 -->
+	
+	<!-- 控制反转 -->
+	<bean id="userDao" class="com.bie.lesson09.UserDaoImpl"></bean>
+	<bean id="orderDao" class="com.bie.lesson09.OrderDaoImpl"></bean>
+	
+	<!--
+		切面类:
+			关注点形成的类,就叫切面(类);
+		关注点:
+			重复代码就叫做关注点;
+	 -->
+	<bean id="aop" class="com.bie.lesson09.Aop"></bean>
+		
+	<!-- 
+		Aop配置 
+			拦截到指定的方法，配置切入点。
+	-->	
+	<aop:config>
+		<!-- 定义一个切入点表达式，拦截那些方法 -->
+		<aop:pointcut expression="execution(* com.bie.lesson09.*.*(..))" id="pt"/>
+	
+		<!-- 配置切面，引用注入的切面类 -->
+		<aop:aspect ref="aop">
+			<!-- 前置通知 -->
+			<aop:before method="begin" pointcut-ref="pt"/>
+			<!-- 后置通知 -->
+			<aop:after method="after" pointcut-ref="pt"/>
+			<!-- 返回后通知 -->
+			<aop:after-returning method="afterReturn" pointcut-ref="pt"/>
+			<!-- 异常通知 -->	
+			<aop:after-throwing method="afterReturn" pointcut-ref="pt"/>
+			<!-- 环绕通知 -->
+			<aop:around method="around" pointcut-ref="pt"/>	
+		</aop:aspect>
+	</aop:config>
+		
+</beans>
+
