@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+ 	
+	<!-- 
+		Spring对jdbc技术提供了很好的支持:
+			体现在:
+			1:Spring对c3p0连接池的支持很完善。
+			2:Spring对jdbc提供了JdbcTemplate来简化操作，
+				JdbcTemplate模板工具类，类似于DbUtis组件。
+		使用SpringJdbc支持步骤:
+			先引入jar文件:
+				c3p0-0.9.1.2.jar c3p0的包
+				mysql-connector-java-5.1.12-bin.jar  mysql的包
+				spring-jdbc-3.2.5.RELEASE.jar jdbc的包 
+				spring-tx-3.2.5.RELEASE.jar 事务包
+	 -->
+		
+	<!-- 
+		数据源对象:
+			c3p0连接池 
+	-->	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql:///test"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="123456"></property>
+		<!-- 初始化连接大小 -->
+		<property name="initialPoolSize" value="3"></property>
+		<!-- 最大连接数目 -->
+		<property name="maxPoolSize" value="10"></property>
+		<!-- 最大执行sql语句的个数 -->
+		<property name="maxStatements" value="100"></property>
+		<!-- 连接不够时候，连接增量 -->
+		<property name="acquireIncrement" value="2"></property>
+	</bean>	
+		
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>	
+	<bean id="userDao" class="com.bie.lesson10.UserDao">
+		<!-- ref引用上面的数据源 -->
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>		
+		
+		
+		
+		
+	<!-- userDao注入到容器中 -->	
+	<!-- <bean id="userDao" class="com.bie.lesson10.UserDao">
+		ref引用上面的数据源
+		<property name="dataSource" ref="dataSource"></property>
+	</bean> -->	
+		
+</beans>
+
