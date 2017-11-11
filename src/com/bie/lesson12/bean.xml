@@ -88,5 +88,14 @@
 	<!-- 第二步:注解方式实现事务： 指定注解方式实现事务 -->
 	<tx:annotation-driven transaction-manager="txManager"/>
 	
+	<!-- 
+		事务传播行为:
+		Propagation.REQUIRED
+			指定当前的方法必须在事务的环境下执行；
+			如果当前运行的方法，已经存在事务， 就会加入当前的事务；
+		Propagation.REQUIRED_NEW
+			指定当前的方法必须在事务的环境下执行；
+			如果当前运行的方法，已经存在事务：  事务会挂起； 会始终开启一个新的事务，执行完后；  刚才挂起的事务才继续运行。
+	 -->
 </beans>
 
