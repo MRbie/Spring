@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    	 http://www.springframework.org/schema/beans/spring-beans.xsd
+     	 http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop.xsd
+         http://www.springframework.org/schema/tx
+     	 http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- 
+		1:一个业务的成功:调用的service是执行成功的，意味着service中调用的所有的dao是执行成功的。 
+		       事务应该在Service层统一控制。
+		2:事务控制概述
+			2.1:编程式事务控制
+				自己手动控制事务，就叫做编程式事务控制。
+				Jdbc代码：
+					Conn.setAutoCommite(false);  // 设置手动控制事务
+				Hibernate代码：
+					Session.beginTransaction();    // 开启一个事务
+				【细粒度的事务控制： 可以对指定的方法、指定的方法的某几行添加事务控制】
+				(比较灵活，但开发起来比较繁琐： 每次都要开启、提交、回滚.)
+			
+			2.2:声明式事务控制
+				Spring提供了对事务的管理, 这个就叫声明式事务管理。
+				Spring提供了对事务控制的实现。用户如果想用Spring的声明式事务管理，只需要在配置文件中配置即可； 不想使用时直接移除配置。这个实现了对事务控制的最大程度的解耦。
+				Spring声明式事务管理，核心实现就是基于Aop。
+				【粗粒度的事务控制： 只能给整个方法应用事务，不可以对方法的某几行应用事务。】
+				(因为aop拦截的是方法。)
+			
+				Spring声明式事务管理器类：
+					Jdbc技术：DataSourceTransactionManager
+					Hibernate技术：HibernateTransactionManager
+					声明式事务管理
+		3:步骤:
+			1) 引入spring-aop相关的4个jar文件
+			2) 引入aop名称空间  【XML配置方式需要引入】
+			3) 引入tx名称空间    【事务方式必须引入】
+	 -->
+	
+	<!-- 
+		数据源对象:
+			c3p0连接池 
+	-->	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql:///test"></property>
+		<property name="user" value="root"></property>
+		<property name="password" value="123456"></property>
+		<!-- 初始化连接大小 -->
+		<property name="initialPoolSize" value="3"></property>
+		<!-- 最大连接数目 -->
+		<property name="maxPoolSize" value="10"></property>
+		<!-- 最大执行sql语句的个数 -->
+		<property name="maxStatements" value="100"></property>
+		<!-- 连接不够时候，连接增量 -->
+		<property name="acquireIncrement" value="2"></property>
+	</bean>	
+		
+	<!-- 设置Spring对jdbc连接操作 -->	
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<constructor-arg ref="dataSource"></constructor-arg>
+	</bean>	
+	
+	<!-- 注入对象 -->
+	<bean id="userDao" class="com.bie.lesson11.UserDao">
+		<property name="jdbcTemplate" ref="jdbcTemplate"></property>
+	</bean>
+	
+	<bean id="userService" class="com.bie.lesson11.UserService">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+	
+	
+	<!-- 
+		Spring声明式事务管理配置  
+			事务，理解，主要是事务的开启，事务的提交和事务的回滚，保持sql的一致性。
+	-->
+	<!-- 第一步: 配置事务管理器类 -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 引入数据源 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 第二步:配置事务增强(如果管理事务?) -->
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="*save*" read-only="false"/>
+			<tx:method name="get*"  read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 第三步: Aop配置： 拦截哪些方法(切入点表表达式) + 应用上面的事务增强配置 -->
+	<aop:config>
+		<!-- 给service层添加事务 -->
+		<aop:pointcut expression="execution(* com.bie.lesson11.UserService.save(..))" id="pt"/>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="pt"/>
+	</aop:config>
+	
+</beans>
+
